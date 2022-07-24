@@ -1,0 +1,190 @@
+version: '3'
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: admin_portainer
+    restart: never
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - admin
+    ports: 
+      - '82:80' # portainer port
+    env_file:
+      - ./portainer.env
+    environment:
+      - VIRTUAL_HOST=portainer.lan
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - '/opt/bundled-appdata/admin/portainer/data:/data'
+        logging:
+    driver: "fluentd"
+      options:
+        tag: portainer
+
+  proxy-manager:
+    image: baudneo/nginx-proxy-manager:latest'
+    restart: never
+    container_name: admin_proxy_mgr
+    ports:
+      - '80:80' # Public HTTP Port
+      - '443:443' # Public HTTPS Port
+      - '81:81' # Admin Web Port
+      - '21:21' # FTP
+    env_file:
+      - ./proxy-manager.env
+    environment:
+      - DB_MYSQL_PORT: 3306
+      - VIRTUAL_HOST=proxy.lan
+      # Uncomment this if IPv6 is not enabled on your host
+      # DISABLE_IPV6: 'true'
+    volumes:
+      - '/opt/bundled-appdata/admin/proxy-manager/data:/data'
+      - '/opt/bundled-appdata/admin/proxy-manager/letsencrypt:/etc/letsencrypt'
+      - '/etc/localtime:/etc/localtime:ro'
+      - '/var/run/docker.sock:/tmp/docker.sock:ro'
+    depends_on:
+      db:
+        condition: service_healthy
+    logging:
+      driver: "fluentd"
+      options:
+        tag: nginx-proxy-manager
+    networks:
+      - admin
+
+  db:
+    image: 'jc21/mariadb-aria:latest'
+    container_name: admin_db
+    restart: never
+    volumes:
+      - '/opt/bundled-appdata/admin/mysql/data:/var/lib/mysql'
+      - '/etc/localtime:/etc/localtime:ro'
+    networks:
+      - admin
+
+  vscode-web:
+    image: lscr.io/linuxserver/code-server
+    container_name: admin_vscode_web
+    volumes:
+      - '/opt/bundled-appdata/admin/vscode/config:/config'
+      - '/opt/bundled-appdata/admin/vscode/user:/home/user'
+      - '/opt/appdata/:/opt/appdata'
+      - '/etc/localtime:/etc/localtime:ro'
+    ports:
+      - 83:8443
+    restart: never
+    networks:
+      - admin
+    env_file:
+      - ./vscode.env
+    environment:
+      - VIRTUAL_HOST=vscode.lan
+    driver: "fluentd"
+      options:
+        tag: vscode
+  
+   grafanadb:
+    image: mysql:5.6
+    env_file:
+      - ./grafana.env
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --innodb_monitor_enable=all, --max-connections=1001]
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+    networks:
+      - admin
+
+  grafana-mysqld-exporter:
+    image: prom/mysqld-exporter
+    env_file:
+      - ./grafana.env
+    environment:
+      - DATA_SOURCE_NAME=root:rootpass@(grafanadb:3307)/
+    ports:
+      - 9104
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - admin
+  
+  grafana:
+    image: grafana/grafana:dev
+    volumes:
+      - '/opt/bundled-appdata/admin/grafana/grafana/provisioning/:/etc/grafana/provisioning/'
+      - '/etc/localtime:/etc/localtime:ro'
+    environment:
+      - VIRTUAL_HOST=grafana.lan
+      - GF_SERVER_ROOT_URL=http://grafana.lan:84/
+    env_file:
+      - ./grafana.env
+    ports:
+      - 84:3000
+    depends_on:
+      db:
+        condition: service_healthy
+    logging:
+      driver: "fluentd"
+      options:
+        tag: grafana
+    networks:
+      - admin
+
+  prometheus:
+    image: prom/prometheus:v2.4.2
+    volumes:
+      - '/opt/bundled-appdata/admin/grafana/prometheus/:/etc/prometheus/'
+      - '/etc/localtime:/etc/localtime:ro'
+    environment:
+      - VIRTUAL_HOST=prometheus.lan
+    ports:
+      - 9090
+    networks:
+      - admin
+
+  loki:
+    image: grafana/loki:master
+    environment:
+      - VIRTUAL_HOST=loki.lan
+    ports:
+      - 3100
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - admin
+
+  fluentd:
+    image: grafana/fluent-plugin-loki:master
+    volumes:
+      - '/opt/bundled-appdata/fluentd/:/fluentd/etc/'
+      - '/etc/localtime:/etc/localtime:ro'
+    links:
+      - loki
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    networks:
+      - admin
+
+crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    container_name: admin_crowdsec
+    volumes:
+      - '/opt/bundled-appdata/admin/crowdsec/data:/var/lib/crowdsec/data/'
+      - '/opt/bundled-appdata/crowdsec/config:/etc/crowdsec/'
+      - '/etc/localtime:/etc/localtime:ro'
+    networks:
+      - admin
+    restart: unless-stopped
+    logging:
+      driver: "fluentd"
+      options:
+        tag: crowdsec
+      
+networks:
+  admin:
+    external: true

@@ -1,0 +1,75 @@
+global:
+  add: README.md
+  autogenerate:
+    -  passwords for databases
+    -  passwords for apps with admin panels
+    
+docker:
+  admin:
+      add:
+        - authelia
+        - ldap server
+        - bunkerweb
+      autogenerate:
+        authelia-config:
+            - jwt_secret  # $(openssl rand -hex 23)
+            - session_secret # $(openssl rand -hex 23)
+            - storage_encryption_key # $(openssl rand -hex 23)
+
+  cloud:
+     - README.md
+     - onlyoffice
+     - vaultwarden
+    nextcloud:
+      - mysql/mariadb
+      - redis
+      - nginx
+      other:
+        - stmp
+        - cron
+        - onlyoffice pluging
+        - ldap suppourt
+ 
+  dns+vpn:
+    - README.md
+    - pihole
+    - unbound
+    - lancache
+    - wiregaurd
+    - wg-easy
+
+  bittorrent:
+    - README.md
+    - delulge 
+    - privoxy
+    - wiregaurd
+    - openvpn
+
+  media-emby:
+    add:
+      - README.md
+      - embystat
+      - handbrake
+      - radarr
+      - sonarr
+
+  media-jellyfin:
+    add:
+      - README.md
+      - jellyfin
+      - embystat
+      - jellyseerr
+      - tdarr
+      - handbrake
+      - radarr
+      - sonarr
+  media-plex:
+    add:
+      - README.md
+      - plex
+      - tautulli
+      - jellyseerr
+      - tdarr
+      - handbrake
+      - radarr
+      - sonarr
