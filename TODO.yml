@@ -10,6 +10,7 @@ docker:
         - authelia
         - ldap server
         - bunkerweb
+        - duckdns # maybe
       autogenerate:
         authelia-config:
             - jwt_secret  # $(openssl rand -hex 23)

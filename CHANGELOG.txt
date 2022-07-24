@@ -1,1 +1,14 @@
-2
+25 Jul 2022:
+Started work on the emby flavour of the media bundle
+Added .gitignore
+Added LICENSE.txt
+Added TODO.yml
+Added CHANGELOG.txt
+Made Outline for the future bundles in TODO.yml
+
+24 Jul 2022: 
+Decided to contine with the bundles and to make a git repo
+Fixed up the admin sercice bundle
+
+23 Jul 2022: 
+Got board made the admin service bundle 
