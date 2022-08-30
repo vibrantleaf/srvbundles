@@ -1,0 +1,93 @@
+version: '3'
+services:
+  portainer:
+    image: 'docker.io/portainer/portainer-ce:latest'
+    container_name: admin_portainer
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - admin
+    ports: 
+      - '82:80' # portainer port
+    env_file:
+      - .env
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - ${CONFIG_PATH}/portainer/:/data
+
+  proxy-manager:
+    image: 'docker.io/baudneo/nginx-proxy-manager:latest'
+    restart: always
+    container_name: admin_npm
+    ports:
+      - '80:80' # Public HTTP Port
+      - '443:443' # Public HTTPS Port
+      - '81:81' # Admin Web Port
+      - '21:21' # FTP
+    env_file: .env
+    environment:
+      - DB_MYSQL_PORT="3306"
+      - DISABLE_IP6=${NPM_DISABLE_IPV6}
+      - DB_MYSQL_HOST=${NPM_DB_MYSQL_HOST}
+      - DB_MYSQL_USER=${NPM_DB_MYSQL_USER}
+      - DB_MYSQL_PASSWORD=${NPM_DB_MYSQL_PASSWORD}
+      - DB_MYSQL_NAME=${NPM_DB_MYSQL_NAME}
+    volumes:
+      - ${CONFIG_PATH}/npm/data:/data
+      - ${CONFIG_PATH}/npm/letsencrypt:/etc/letsencrypt'
+      - '/etc/localtime:/etc/localtime:ro'
+      - '/var/run/docker.sock:/tmp/docker.sock:ro'
+    depends_on:
+      - "npmdb"
+      - "crowdsec"
+    networks:
+      - admin
+
+  npmdb:
+    image: 'docker.io/jc21/mariadb-aria:latest'
+    container_name: admin_npmdb
+    restart: always
+    env_file: .env
+    environment:
+      - DB_MYSQL_PORT="3306"
+      - DISABLE_IP6=${NPM_DISABLE_IPV6}
+      - DB_MYSQL_HOST=${NPM_DB_MYSQL_HOST}
+      - DB_MYSQL_USER=${NPM_DB_MYSQL_USER}
+      - DB_MYSQL_PASSWORD=${NPM_DB_MYSQL_PASSWORD}
+      - DB_MYSQL_NAME=${NPM_DB_MYSQL_NAME}
+    volumes:
+      - ${CONFIG_PATH}/npm/mysql/:/var/lib/mysql
+      - '/etc/localtime:/etc/localtime:ro'
+    networks:
+      - admin
+      
+crowdsec:
+    image: 'docker.io/crowdsecurity/crowdsec:latest'
+    container_name: admin_crowdsec
+    volumes:
+      - ${CONFIG_PATH}/crowdsec/data:/var/lib/crowdsec/data/
+      - ${CONFIG_PATH}crowdsec/config:/etc/crowdsec/
+      - '/etc/localtime:/etc/localtime:ro'
+    networks:
+      - admin
+    restart: always
+     
+  vscode-web:
+    image: 'lscr.io/linuxserver/code-server:latest'
+    container_name: admin_vscode
+    volumes:
+      - ${CONFIG_PATH}/vscode/config:/config
+      - ${CONFIG_PATH}/vscode/user:/home/user
+      - '/etc/localtime:/etc/localtime:ro'
+    ports:
+      - 83:8443
+    restart: unless-stopped
+    networks:
+      - admin
+    env_file: .env
+   
+networks:
+  admin:
+    external: true
