@@ -1,3 +1,11 @@
+30 Aug 2022:
+Finished media-jellyfin bundle
+Finished media-emby bundle
+Finished media-plex bundle
+Finished tdarr-handbrake bundle
+Updated TODO.yml
+Updated .gitignore
+
 25 Jul 2022:
 Started work on the emby flavour of the media bundle
 Added .gitignore
