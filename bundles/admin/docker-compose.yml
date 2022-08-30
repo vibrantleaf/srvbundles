@@ -1,4 +1,7 @@
 version: '3'
+secrets:
+  npmdb_mysql_password:
+    external: true
 services:
   portainer:
     image: 'docker.io/portainer/portainer-ce:latest'
@@ -32,8 +35,11 @@ services:
       - DISABLE_IP6=${NPM_DISABLE_IPV6}
       - DB_MYSQL_HOST=${NPM_DB_MYSQL_HOST}
       - DB_MYSQL_USER=${NPM_DB_MYSQL_USER}
-      - DB_MYSQL_PASSWORD=${NPM_DB_MYSQL_PASSWORD}
+      #- DB_MYSQL_PASSWORD=${NPM_DB_MYSQL_PASSWORD}
       - DB_MYSQL_NAME=${NPM_DB_MYSQL_NAME}
+      - DB_MYSQL_PASSWORD_FILE=/run/secrets/npmdb_mysql_password
+    secrets:
+      - npmdb_mysql_password
     volumes:
       - ${CONFIG_PATH}/npm/data:/data
       - ${CONFIG_PATH}/npm/letsencrypt:/etc/letsencrypt'
@@ -50,6 +56,10 @@ services:
     container_name: admin_npmdb
     restart: always
     env_file: .env
+    environment:
+       - DB_MYSQL_PASSWORD_FILE=/run/secrets/npmdb_mysql_password
+    secrets:
+      - npmdb_mysql_password
     environment:
       - DB_MYSQL_PORT="3306"
       - DISABLE_IP6=${NPM_DISABLE_IPV6}
