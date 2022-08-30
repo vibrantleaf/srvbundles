@@ -1,0 +1,99 @@
+version: '3'
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: media_jellyfin
+    environment:
+      - PUID=1003
+      - PGID=1003
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - ${CONFIG_PATH}/jellyfin:/config
+      - ${MEDIA_PATH}:/media
+    ports:
+      - '8096:8096/tcp' # WebUI Port
+      - '8920:8920/tcp' # webpage https/ssl
+      - '1900:1900/udp' # dlna
+      - '7359:7359/udp' # network discovery
+    restart: unless-stopped
+    networks:
+      - media
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  jellyseerr:
+    container_name: media_jellyseerr
+    image: fallenbagel/jellyseerr:latest
+    ports:
+      - '8095:5055' # WebUI Port
+    environment:
+      - PUID=1003
+      - PGID=1003
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - ${CONFIG_PATH}/jellyseerr:/app/config
+      - ${MEDIA_PATH}:/media
+      - '/tmp/transcode_cache:/config/data/transcodes'
+    networks:
+      - media
+    restart: unless-stopped
+
+  embystat:
+    image: lscr.io/linuxserver/embystat:latest
+    container_name: media_embystat
+    environment:
+      - PUID=1003
+      - PGID=1003
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - ${CONFIG_PATH}/embystat/:/config
+    ports:
+      - 6555:6555
+    restart: unless-stopped
+
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: media_radarr
+    environment:
+      - PUID=1003
+      - PGID=1003
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - ${CONFIG_PATH}/radarr/:/config
+      - ${MEDIA_PATH}/Movies/:/movies
+      - ${DOWNLOAD_PATH}:/downloads
+    ports:
+      - 8093:7878 # WebUI & Service Port
+    restart: unless-stopped
+    networks:
+      -media
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: media_sonarr
+    environment:
+      - PUID=1003
+      - PGID=1003
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - ${CONFIG_PATH}/sonarr/:/config
+      - ${MEDIA_PATH}/Shows/:/Shows
+      - ${DOWNLOAD_PATH}:/downloads
+    ports:
+      - 8092:8989 # WebUI & Service Port
+    restart: unless-stopped
+    networks:
+      - media
+
+networks:
+  media:
+    driver: bridge
+    external: true
