@@ -1,4 +1,7 @@
 version: '3'
+secrets:
+  plex_claim:
+    external: true
 services:
   plex:
     image: lscr.io/linuxserver/plex:latest
@@ -7,7 +10,9 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - VERSION=docker
-      - FILE__PLEX_CLAIM=/run/secrets/plex_claim
+      - PLEX_CLAIM_FILE=/run/secrets/plex_claim
+    secrets:
+      - plex_claim
     env_file: .env
     volumes:
       - '/etc/localtime:/etc/localtime:ro'
