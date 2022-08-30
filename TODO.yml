@@ -41,36 +41,8 @@ docker:
 
   bittorrent:
     - README.md
-    - delulge 
+    - vuetorrent
     - privoxy
     - wiregaurd
     - openvpn
 
-  media-emby:
-    add:
-      - README.md
-      - embystat
-      - handbrake
-      - radarr
-      - sonarr
-
-  media-jellyfin:
-    add:
-      - README.md
-      - jellyfin
-      - embystat
-      - jellyseerr
-      - tdarr
-      - handbrake
-      - radarr
-      - sonarr
-  media-plex:
-    add:
-      - README.md
-      - plex
-      - tautulli
-      - jellyseerr
-      - tdarr
-      - handbrake
-      - radarr
-      - sonarr
