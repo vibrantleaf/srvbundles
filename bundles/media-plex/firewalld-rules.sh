@@ -14,7 +14,7 @@ sudo firewall-cmd --permanent --zone=public --add-port=32469/udp
 # jellyseerr port(s)
 sudo firewall-cmd --permanent --zone=public --add-port=8095/tcp
 
-# embystat port(s)
+# tautulli port(s)
 sudo firewall-cmd --permanent --zone=public --add-port=6555/tcp
 
 # radarr port(s)
