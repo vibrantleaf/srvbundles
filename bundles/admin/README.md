@@ -18,7 +18,7 @@ sudo bash ./create-docker-network.sh
 # for firewalld
 sudo bash ./firewalld-rules.sh
 
-# for ufw
+# or for ufw
 sudo bash ./ufw-rules.sh
 
 # compose
