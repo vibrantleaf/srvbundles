@@ -15,6 +15,9 @@ nano .env
 # create docker network
 sudo bash ./create-docker-network.sh
 
+# generate mysql passwords using docker secrets
+sudo bash generate-mysql-passwords.sh
+
 # for firewalld
 sudo bash ./firewalld-rules.sh
 
