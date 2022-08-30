@@ -1,4 +1,4 @@
-# 🐋 Server Plex Meida Server Bundle
+# 🐋 Plex Meida Server Bundle
 One service bundle for all your Media Server needs, Using Plex Media Server 
 
 ### This Bundle Incudes:
