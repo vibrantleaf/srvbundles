@@ -1,0 +1,96 @@
+version: '3'
+services:
+  grafana:
+    image: 'docker.io/grafana/grafana-oss:latest'
+    container_name: admin_grafana
+    volumes:
+      - ${CONFIG_PATH}/grafana/provisioning/:/etc/grafana/provisioning/
+      - '/etc/localtime:/etc/localtime:ro'
+    env_file: ./grafana.env
+    ports:
+      - 701:3000
+    depends_on:
+      grafanadb:
+        condition: service_healthy
+    networks:
+      - grafana
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      
+   grafanadb:
+    image: 'docker.io/mysql:5.6'
+    container_name: admin_grafanadb
+    env_file:
+      - .env
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --innodb_monitor_enable=all, --max-connections=1001]
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+    networks:
+      - grafana
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+
+  grafana-mysqld-exporter:
+    image: 'docker.io/prom/mysqld-exporter'
+    container_name: admin_grafana_mysql-exp
+    env_file:
+      - ./grafana.env
+    environment:
+      - DATA_SOURCE_NAME=root:rootpass@(grafanadb:3307)/
+    ports:
+      - 704:9104
+    depends_on:
+      grafanadb:
+        condition: service_healthy
+    networks:
+      - grafana
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      
+  prometheus:
+    image: 'docker.io/prom/prometheus:latest'
+    container_name: admin_prometheus
+    volumes:
+      - ${CONFIG_PATH}/prometheus/:/etc/prometheus/
+      - '/etc/localtime:/etc/localtime:ro'
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 702:9090
+    networks:
+      - grafana
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+
+  loki:
+    image: 'docker.io/grafana/loki:master'
+    container_name: admin_loki
+    ports:
+      - "703:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - grafana
+    volumes:
+      - ./loki-config.yml:/etc/loki/local-config.yaml
+      - '/etc/localtime:/etc/localtime:ro'
+    depends_on:
+      - promtail
+      
+  promtail:
+    image: 'docker.io/grafana/promtail:latest'
+    volumes:
+      - /var/log:/var/log
+      - ${CONFIG_PATH}/promtail:/etc/promtail
+      - ./promtail-config.yml:/etc/promtail/promtail-config.yml
+    restart: unless-stopped
+    command: -config.file=/etc/promtail/promtail-config.yml
+    networks:
+      - grafana
+network:
+  grafana:
+    external: true
