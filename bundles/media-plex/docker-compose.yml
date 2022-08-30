@@ -53,18 +53,19 @@ services:
       - media
     restart: unless-stopped
 
-  embystat:
-    image: lscr.io/linuxserver/embystat:latest
-    container_name: media_embystat
+
+  tautulli:
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: media_tautulli
+    env_file: .env
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-    env_file: .env
     volumes:
       - '/etc/localtime:/etc/localtime:ro'
-      - ${CONFIG_PATH}/embystat/:/config
+      - ${CONFIG_PATH}/jellyseerr:/app/config
     ports:
-      - 6555:6555
+      - 6555:8181
     restart: unless-stopped
 
 
