@@ -16,7 +16,7 @@ nano .env
 # create docker network
 sudo bash ./create-docker-network.sh
 
-# Plex Claim
+# Add your Plex Claim using docker secrets
 sudo bash ./plex-claim.sh # enter a "space" if you don't have a plex claim
 
 # for firewalld
