@@ -1,7 +1,0 @@
-ENABLED=true
-API_URL=http://:8080
-API_KEY=
-# ReCaptcha Secret Key
-SECRET_KEY=
-# Recaptcha Site key
-SITE_KEY=
