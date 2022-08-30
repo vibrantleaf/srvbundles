@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # jellfin port(s)
 sudo ufw allow 8096/tcp
 sudo ufw allow 8920/tcp
