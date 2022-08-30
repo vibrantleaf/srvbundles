@@ -25,7 +25,7 @@ services:
       - ${CONFIG_PATH}/tdarr:/app/configs
       - ${LOGS_PATH}/tdarr/:/app/logs
       - ${MEDIA_ROOT_PATH}/:/media
-      - "/tmp/transcode_cache:/temp"
+      - "/tmp/transcode_cache:/tmp"
 
   tdarr-node:
     container_name: tdarr_node
@@ -44,7 +44,25 @@ services:
       - ${CONFIG_PATH}/tdarr:/app/configs
       - ${LOGS_PATH}/tdarr/:/app/logs
       - ${MEDIA_ROOT_PATH}/:/media
-      - "/tmp/transcode_cache:/temp"
+      - "/tmp/transcode_cache:/tmp"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  handbrake:
+    image: docker.io/jlesage/handbrake:latest
+    ports:
+      - "5800:5800"
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - ${CONFIG_PATH}/handbrake:/config:rw
+      - ${HANDBRAKE_STORAGE_PATH}:/storage:ro
+      - ${HANDBRAKE_WATCH_PATH}:/watch:rw
+      - ${HANDBRAKE_OUTPUT_PATH}:/output:rw
     deploy:
       resources:
         reservations:
