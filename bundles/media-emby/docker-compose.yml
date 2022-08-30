@@ -78,7 +78,7 @@ services:
       - 8093:7878 # WebUI & Service Port
     restart: unless-stopped
     networks:
-      -media
+      - media
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
