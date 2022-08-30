@@ -1,4 +1,4 @@
-# 🐋 Server Meida Emby Bundle
+# 🐋 Server Emby Media Server Bundle
 One service bundle for all your Media Server needs, Using Emby Media Server 
 ![](https://emby.media/resources/logowhite_1881.png)
 ### This Bundle Incudes:
