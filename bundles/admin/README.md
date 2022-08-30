@@ -5,7 +5,7 @@ One service bundle for all your Server Administration needs.
 - ☁️ Portainer: Docker WebUI
 - ♦️ Nginx Proxy Manager: WebUI Proxy Manager Using Nginx
 - 🦙 CrowdSec: Open-Source Crowd-Sourced Intrusion Prevention System & Security Suite
-- 📄 Code Server: WebBased IDE, File Manager & terminal Based on VSCode  
+- 📄 Code Server: WebBased IDE, File Manager & Terminal Based on VSCode  
 
 ### How To Install:
 ```sh
