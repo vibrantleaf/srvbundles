@@ -8,8 +8,28 @@ One service bundle for all your Media Server needs, Using Jellyfin Media Server
 - 🔷 Sonarr: SmartPVR for newsgroups and torrents.
 - ▶️ Radarr: A fork of Sonarr to work with movies
 
-### TODO.List
+### How To Install:
+```sh
+# edit .env
+nano .env
 
+# create docker network
+sudo bash ./create-docker-network.sh
 
+# for firewalld
+sudo bash ./firewalld-rules.sh
+
+# for ufw
+sudo bash ./ufw-rules.sh
+
+# compose
+sudo docker-compose up -d
+
+```
 
 ### How To Use:
+- 🟣 Jellyfin: Go to http://<YourServerIP>:8096/
+- 📈 EmbyStat: Go to http://<YourServerIP>:6555/
+- 🐙 Jellyseerr: Go to http://<YourServerIP>:8095/
+- 🔷 Sonarr: Go to http://<YourServerIP>:8092/
+- ▶️ Radarr: Go to http://<YourServerIP>:8093/
