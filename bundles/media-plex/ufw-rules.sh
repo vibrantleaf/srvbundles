@@ -14,7 +14,7 @@ sudo ufw allow 32469/udp
 # jellyseerr port(s)
 sudo ufw allow 8095/tcp
 
-# embystat port(s)
+# tautulli port(s)
 sudo ufw allow 6555/tcp
 
 # radarr port(s)
