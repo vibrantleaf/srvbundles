@@ -63,7 +63,7 @@ services:
       - PGID=${PGID}
     volumes:
       - '/etc/localtime:/etc/localtime:ro'
-      - ${CONFIG_PATH}/jellyseerr:/app/config
+      - ${CONFIG_PATH}/tautulli:/app/config
     ports:
       - 6555:8181
     restart: unless-stopped
