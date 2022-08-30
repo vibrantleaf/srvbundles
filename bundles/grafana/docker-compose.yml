@@ -31,23 +31,6 @@ services:
       - grafana
     volumes:
       - '/etc/localtime:/etc/localtime:ro'
-
-  grafana-mysqld-exporter:
-    image: 'docker.io/prom/mysqld-exporter'
-    container_name: admin_grafana_mysql-exp
-    env_file:
-      - ./grafana.env
-    environment:
-      - DATA_SOURCE_NAME=root:rootpass@(grafanadb:3307)/
-    ports:
-      - 704:9104
-    depends_on:
-      grafanadb:
-        condition: service_healthy
-    networks:
-      - grafana
-    volumes:
-      - '/etc/localtime:/etc/localtime:ro'
       
   prometheus:
     image: 'docker.io/prom/prometheus:latest'
