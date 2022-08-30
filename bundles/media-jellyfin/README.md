@@ -1,6 +1,6 @@
 # 🐋 Server Meida Jellyfin Bundle
 One service bundle for all your Media Server needs, Using Jellyfin Media Server 
-
+![](https://raw.githubusercontent.com/vibrantleaf/srvbundles/main/bundles/media-jellyfin/jellyfin-logo-banner.svg)
 ### This Bundle Incudes:
 - 🟣 Jellyfin: Media Server.
 - 📈 EmbyStat: Multiplatform statistics.
