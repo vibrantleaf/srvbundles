@@ -28,8 +28,8 @@ sudo docker-compose up -d
 ```
 
 ### How To Use:
-- 🟣 Jellyfin: Go to http://<YourServerIP>:8096/
-- 📈 EmbyStat: Go to http://<YourServerIP>:6555/
-- 🐙 Jellyseerr: Go to http://<YourServerIP>:8095/
-- 🔷 Sonarr: Go to http://<YourServerIP>:8092/
-- ▶️ Radarr: Go to http://<YourServerIP>:8093/
+- 🟣 Jellyfin: Go to `http://<YourServerIP>:8096/`
+- 📈 EmbyStat: Go to `http://<YourServerIP>:6555/`
+- 🐙 Jellyseerr: Go to `http://<YourServerIP>:8095/`
+- 🔷 Sonarr: Go to `http://<YourServerIP>:8092/`
+- ▶️ Radarr: Go to `http://<YourServerIP>:8093/`
