@@ -1,0 +1,110 @@
+version: '3'
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: media_plex
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - VERSION=docker
+      - PLEX_CLAIM=${PLEX_CLAIM}
+    env_file: .env
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - ${CONFIG_PATH}/plex:/config
+      - ${MEDIA_ROOT_PATH}:/media
+    ports:
+      - 32400:32400/tcp
+      - 1900:1900/udp
+      - 3005:3005/tcp
+      - 5353:5353/udp
+      - 8324:8324/tcp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+      - 32469:32469/tcp
+    restart: unless-stopped
+    networks:
+      - media
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  jellyseerr:
+    container_name: media_jellyseerr
+    image: fallenbagel/jellyseerr:latest
+    ports:
+      - '8095:5055' # WebUI Port
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    env_file: .env
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - ${CONFIG_PATH}/jellyseerr:/app/config
+      - ${MEDIA_ROOT_PATH}:/media
+      - '/tmp/transcode_cache:/config/data/transcodes'
+    networks:
+      - media
+    restart: unless-stopped
+
+  embystat:
+    image: lscr.io/linuxserver/embystat:latest
+    container_name: media_embystat
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    env_file: .env
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - ${CONFIG_PATH}/embystat/:/config
+    ports:
+      - 6555:6555
+    restart: unless-stopped
+
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: media_radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    env_file: .env
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - ${CONFIG_PATH}/radarr/:/config
+      - ${MEDIA_ROOT_PATH}/Movies/:/movies
+      - ${DOWNLOAD_PATH}:/downloads
+    ports:
+      - 8093:7878 # WebUI & Service Port
+    restart: unless-stopped
+    networks:
+      -media
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: media_sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    env_file: .env
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - ${CONFIG_PATH}/sonarr/:/config
+      - ${MEDIA_ROOT_PATH}/Shows/:/Shows
+      - ${DOWNLOAD_PATH}:/downloads
+    ports:
+      - 8092:8989 # WebUI & Service Port
+    restart: unless-stopped
+    networks:
+      - media
+
+networks:
+  media:
+    driver: bridge
+    external: true
