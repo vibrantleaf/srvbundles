@@ -4,6 +4,7 @@ services:
     container_name: tdarr_server
     image: ghcr.io/haveagitgat/tdarr:latest
     restart: unless-stopped
+    env_file: .env
     network_mode: bridge
     ports:
       - 8265:8265 # webUI port
@@ -31,6 +32,7 @@ services:
     container_name: tdarr_node
     image: ghcr.io/haveagitgat/tdarr_node:latest
     restart: unless-stopped
+    env_file: .env
     network_mode: service:tdarr
     environment:
       - PUID=${PUID}
@@ -55,6 +57,7 @@ services:
 
   handbrake:
     image: docker.io/jlesage/handbrake:latest
+    env_file: .env
     ports:
       - "5800:5800"
     volumes:
