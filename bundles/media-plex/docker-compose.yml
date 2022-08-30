@@ -7,7 +7,7 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - VERSION=docker
-      - FILE__PLEX_CLAIM=./plex_claim
+      - FILE__PLEX_CLAIM=/run/secrets/plex_claim
     env_file: .env
     volumes:
       - '/etc/localtime:/etc/localtime:ro'
