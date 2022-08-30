@@ -20,3 +20,7 @@ sudo bash ./ufw-rules.sh
 sudo docker-compose up -d
 
 ```
+
+### How To Use:
+- 🇹 Tdarr v2: Go to `http://<YourServerIP>:8265/`
+- 🍹Handbrake: Go to `http://<YourServerIP>:5800/`
