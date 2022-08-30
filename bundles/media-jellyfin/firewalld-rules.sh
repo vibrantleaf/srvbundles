@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # jellfin port(s)
 sudo firewall-cmd --permanent --zone=public --add-port=8096/tcp
 sudo firewall-cmd --permanent --zone=public --add-port=8920/tcp
