@@ -13,3 +13,5 @@
 */docs
 */.nyc_output
 */cassettes
+
+*/bundles/tdarr/tdarr-server
