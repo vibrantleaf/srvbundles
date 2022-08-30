@@ -15,3 +15,6 @@ sudo firewall-cmd --permanent --zone=public --add-port=8093/tcp
 
 # sonarr port(s)
 sudo firewall-cmd --permanent --zone=public --add-port=8092/tcp
+
+# firewalld reload
+sudo firewall-cmd --reload
