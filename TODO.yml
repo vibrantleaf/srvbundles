@@ -4,7 +4,7 @@ global:
     -  passwords for databases
     -  passwords for apps with admin panels
     
-docker:
+bundles:
   admin:
       add:
         - authelia
