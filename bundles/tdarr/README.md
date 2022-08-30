@@ -13,7 +13,7 @@ nano .env
 # for firewalld
 sudo bash ./firewalld-rules.sh
 
-# for ufw
+# or for ufw
 sudo bash ./ufw-rules.sh
 
 # compose
