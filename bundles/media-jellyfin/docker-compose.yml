@@ -21,6 +21,8 @@ services:
     restart: unless-stopped
     networks:
       - media
+    depends_on:
+      - xteve
     deploy:
       resources:
         reservations:
@@ -45,6 +47,10 @@ services:
       - '/tmp/transcode_cache:/config/data/transcodes'
     networks:
       - media
+    depends_on:
+      - jellyfin
+      - radarr
+      - sonarr
     restart: unless-stopped
 
   embystat:
@@ -59,6 +65,8 @@ services:
       - ${CONFIG_PATH}/embystat/:/config
     ports:
       - 6555:6555
+    depends_on:
+      - jellyfin
     restart: unless-stopped
 
 
