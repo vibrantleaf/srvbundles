@@ -17,5 +17,8 @@ sudo ufw allow 8093/tcp
 # sonarr port(s)
 sudo ufw allow 8092/tcp
 
+# xteve port(s)
+sudo firewall-cmd --permanent --zone=public --add-port=34400/tcp
+
 # ufw reload
 sudo ufw reload
