@@ -13,6 +13,7 @@ services:
       - '/etc/localtime:/etc/localtime:ro'
       - ${CONFIG_PATH}/jellyfin:/config
       - ${MEDIA_ROOT_PATH}:/media
+      - ${TRANSCODE_CACHE}/jellyfin:/config/data/transcodes
     ports:
       - '8096:8096/tcp' # WebUI Port
       - '8920:8920/tcp' # webpage https/ssl
