@@ -8,7 +8,7 @@ One service bundle for all your Media Server needs, Using Jellyfin Media Server
 - 📈 EmbyStat: Multiplatform statistics.
 - 🐙 Jellyseerr: Media Request Management System.
 - 🔷 Sonarr: SmartPVR for newsgroups and torrents.
-- ▶️ Radarr: A fork of Sonarr to work with movies
+- ▶️ Radarr: A fork of Sonarr to work with movies.
 - 📺 xTeVe: M3U Proxy for Live TV.
 
 ### How To Install:
