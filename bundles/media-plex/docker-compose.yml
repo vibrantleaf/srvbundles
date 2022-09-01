@@ -58,7 +58,6 @@ services:
       - media
     restart: unless-stopped
 
-
   tautulli:
     image: lscr.io/linuxserver/tautulli:latest
     container_name: media_tautulli
@@ -72,7 +71,6 @@ services:
     ports:
       - 6555:8181
     restart: unless-stopped
-
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -110,6 +108,21 @@ services:
     networks:
       - media
 
+  xteve:
+    container_name: media_xteve
+    image: docker.io/alturismo/xteve:latest
+    ports:
+      - 34400:34400
+    volumes:
+      - ${CONFIG_PATH}/xtveve:/root/.xteve:rw
+      - ${CONFIG_PATH}/xtveve/_config:/config:rw
+      - /tmp/xteve/:/tmp/xteve:rw
+      - ${CONFIG_PATH}/xtveve/tvheadend/data/:/TVH
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+        
 networks:
   media:
     driver: bridge
