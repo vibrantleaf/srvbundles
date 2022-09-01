@@ -42,7 +42,7 @@ services:
 
   jellyseerr:
     container_name: media_jellyseerr
-    image: fallenbagel/jellyseerr:latest
+    image: docker.io/fallenbagel/jellyseerr:latest
     ports:
       - '8095:5055' # WebUI Port
     environment:
