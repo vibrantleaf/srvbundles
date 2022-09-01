@@ -7,6 +7,7 @@ One service bundle for all your Media Server needs, Using Emby Media Server
 - 🐙 Jellyseerr: Media Request Management System.
 - 🔷 Sonarr: SmartPVR for newsgroups and torrents.
 - ▶️ Radarr: A fork of Sonarr to work with movies
+- 📺 xTeVe: M3U Proxy for Live TV.
 
 ### How To Install:
 ```sh
@@ -33,3 +34,4 @@ sudo docker-compose up -d
 - 🐙 Jellyseerr: Go to `http://<YourServerIP>:8095/`
 - 🔷 Sonarr: Go to `http://<YourServerIP>:8092/`
 - ▶️ Radarr: Go to `http://<YourServerIP>:8093/`
+- 📺 xTeVe: Go to `http://<YourServerIP>:34400/`
