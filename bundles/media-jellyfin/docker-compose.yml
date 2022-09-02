@@ -101,6 +101,7 @@ services:
       - '/etc/localtime:/etc/localtime:ro'
       - ${CONFIG_PATH}/sonarr/:/config
       - ${MEDIA_ROOT_PATH}/Shows/:/Shows
+      - ${MEDIA_ROOT_PATH}/Anime/:/Anime
       - ${DOWNLOAD_PATH}:/downloads
     ports:
       - 8092:8989 # WebUI & Service Port
