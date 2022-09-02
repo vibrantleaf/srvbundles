@@ -36,4 +36,4 @@ sudo docker-compose up -d
 - 🐙 Jellyseerr: Go to `http://<YourServerIP>:8095/`
 - 🔷 Sonarr: Go to `http://<YourServerIP>:8092/`
 - ▶️ Radarr: Go to `http://<YourServerIP>:8093/`
-- 📺 xTeVe: Go to `http://<YourServerIP>:34400/`
+- 📺 xTeVe: Go to `http://<YourServerIP>:34400/web/`
