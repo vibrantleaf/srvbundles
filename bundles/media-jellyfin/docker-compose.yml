@@ -6,8 +6,8 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-      - NVIDIA_DRIVER_CAPABILITIES=all
-      - NVIDIA_VISIBLE_DEVICES=all
+      #- NVIDIA_DRIVER_CAPABILITIES=all
+      #- NVIDIA_VISIBLE_DEVICES=all
     env_file: .env
     volumes:
       - '/etc/localtime:/etc/localtime:ro'
