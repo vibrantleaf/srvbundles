@@ -1,1 +1,76 @@
+version: '3'
+secrets:
+  seafile_mysql_password:
+    external: true
+    
+services:
+  seafiledb:
+    image: docker.io/_/mariadb:10.5
+    container_name: seafile_mysql
+    restart: unless-stopped
+    secrets:
+      - seafile_mysql_password
+    env_file: .env
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/seafile_mysql_password
+    volumes:
+      - ${CONFIG_PATH}/seafile/db:/var/lib/mysql  # Requested, specifies the path to MySQL data persistent store.
+    networks:
+      - cloud
 
+  seafilememcached:
+    image: docker.io/_/memcached:1.6
+    container_name: seafile_memcached
+    restart: unless-stopped
+    entrypoint: memcached -m 256
+    networks:
+      - cloud
+          
+  seafile:
+    image: docker.io/seafileltd/seafile-mc:latest
+    container_name: seafile
+    ports:
+      - "8071:80"
+    volumes:
+      - ${SEAFILE_PERSISTENT_SHARE}:/shared   # Requested, specifies the path to Seafile data persistent store.
+    env_file: .env
+    environment:
+      - SEAFILE_SERVER_LETSENCRYPT=false
+      - DB_HOST=seafiledb
+      - DB_ROOT_PASSWD=/run/secrets/seafile_mysql_password
+
+      #- SEAFILE_ADMIN_PASSWORD=asecret  # hardcodes the admin password
+    restart: unless-stopped
+    depends_on:
+      - seafiledb
+      - seafilememcached
+    networks:
+      - cloud
+      
+    radicale:
+    image: docker.io/tomsquest/docker-radicale:latest
+    container_name: radicale
+    ports:
+      - 5232:5232
+    init: true
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      - CHOWN
+      - KILL
+    healthcheck:
+      test: curl -f http://127.0.0.1:5232 || exit 1
+      interval: 30s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - cloud
+    volumes:
+      - ${RADICALE_PERSISTENT_SHARE}/data:/data
+networks:
+  cloud:
