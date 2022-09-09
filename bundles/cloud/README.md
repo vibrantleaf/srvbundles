@@ -4,7 +4,7 @@ One service bundle for all your cloud needs
 ### This Bundle Incudes:
 - ☁️ seafile: A High performance file syncing and sharing server.
 - 🌱 radicale: A simple CalDAV and CardDAV server.
-- 🦊 firefox sync: browser sync.
+- 🦊 firefox sync: A browser synchronization Server.
 - 🦘 wallabag: A seflhosed read it later service
 
 ### How To Install:
