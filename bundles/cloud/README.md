@@ -35,3 +35,4 @@ sudo docker-compose up -d
 - 🌱 radicale: 
 - 🦊 firefox sync:
 - 🦘 wallabag: 
+- 🛡️ vaultwarden:
