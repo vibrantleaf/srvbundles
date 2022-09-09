@@ -19,16 +19,10 @@ bundles:
 
   cloud:
      - README.md
-     - onlyoffice
+     - wallabag
      - vaultwarden
-    nextcloud:
-      - mysql/mariadb
-      - redis
-      - nginx
+     - replace firefox sync with firefox sync rs
       other:
-        - stmp
-        - cron
-        - onlyoffice pluging
         - ldap suppourt
  
   dns+vpn:
