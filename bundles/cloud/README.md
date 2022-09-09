@@ -3,9 +3,10 @@ One service bundle for all your cloud needs
 
 ### This Bundle Incudes:
 - ☁️ seafile: A High performance file syncing and sharing server.
-- 🌱 radicale: A simple CalDAV and CardDAV server.
-- 🦊 firefox sync: A browser synchronization Server.
+- 🌱 radicale: A simple CalDAV and CardDAV sync server.
+- 🦊 firefox sync: A browser synchronization service.
 - 🦘 wallabag: A seflhosed read it later service.
+- 🛡️ vaultwarden: A Unofficial Bitwarden compatible server.
 
 ### How To Install:
 ```sh
