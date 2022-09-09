@@ -39,4 +39,5 @@ bundles:
     - privoxy
     - wiregaurd
     - openvpn
-
+    - utorrent
+    - prollarr 
